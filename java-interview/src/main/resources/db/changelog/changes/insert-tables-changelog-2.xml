@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<changeSet author="gilberto" id="insert-bank">
+		<insert tableName="bank">
+			<column name="id" valueNumeric="1" />
+			<column name="name" value="Bradesco" />
+		</insert>
+
+		<insert tableName="bank">
+			<column name="id" valueNumeric="2" />
+			<column name="name" value="Itau" />
+		</insert>
+	</changeSet>
+
+	<changeSet author="gilberto" id="insert-user">
+		<insert tableName="user">
+			<column name="id" valueNumeric="1" />
+			<column name="user_name" value="Carlos" />
+			<column name="password"
+				value="$2a$10$mfoM1/6BxdpuP0Qx69RGvO1LAEcvXiXfoM33Sqy2M3P1isU0U8Bf6" />
+		</insert>
+
+		<insert tableName="user">
+			<column name="id" valueNumeric="2" />
+			<column name="user_name" value="José" />
+			<column name="password"
+				value="$2a$10$mfoM1/6BxdpuP0Qx69RGvO1LAEcvXiXfoM33Sqy2M3P1isU0U8Bf6" />
+		</insert>
+
+		<insert tableName="user">
+			<column name="id" valueNumeric="3" />
+			<column name="user_name" value="Maria" />
+			<column name="password"
+				value="$2a$10$mfoM1/6BxdpuP0Qx69RGvO1LAEcvXiXfoM33Sqy2M3P1isU0U8Bf6" />
+		</insert>
+
+		<insert tableName="user">
+			<column name="id" valueNumeric="4" />
+			<column name="user_name" value="Pedro" />
+			<column name="password"
+				value="$2a$10$mfoM1/6BxdpuP0Qx69RGvO1LAEcvXiXfoM33Sqy2M3P1isU0U8Bf6" />
+		</insert>
+
+		<insert tableName="user">
+			<column name="id" valueNumeric="5" />
+			<column name="user_name" value="Matheus" />
+			<column name="password"
+				value="$2a$10$mfoM1/6BxdpuP0Qx69RGvO1LAEcvXiXfoM33Sqy2M3P1isU0U8Bf6" />
+		</insert>
+		<insert tableName="user">
+			<column name="id" valueNumeric="6" />
+			<column name="user_name" value="admin" />
+			<column name="password"
+				value="$2a$10$mfoM1/6BxdpuP0Qx69RGvO1LAEcvXiXfoM33Sqy2M3P1isU0U8Bf6" />
+		</insert>
+
+	</changeSet>
+
+	<changeSet author="gilberto" id="insert-account">
+		<insert tableName="account">
+			<column name="id" valueNumeric="1" />
+			<column name="number" valueNumeric="11" />
+			<column name="owner_id" valueNumeric="1" />
+			<column name="balance" valueNumeric="1650" />
+			<column name="password" value="123" />
+			<column name="bank_id" valueNumeric="1" />
+		</insert>
+
+		<insert tableName="account">
+			<column name="id" valueNumeric="2" />
+			<column name="number" valueNumeric="12" />
+			<column name="owner_id" valueNumeric="2" />
+			<column name="balance" valueNumeric="10260" />
+			<column name="password" value="123" />
+			<column name="bank_id" valueNumeric="1" />
+		</insert>
+
+		<insert tableName="account">
+			<column name="id" valueNumeric="3" />
+			<column name="number" valueNumeric="13" />
+			<column name="owner_id" valueNumeric="3" />
+			<column name="balance" valueNumeric="180" />
+			<column name="password" value="123" />
+			<column name="bank_id" valueNumeric="2" />
+		</insert>
+
+		<insert tableName="account">
+			<column name="id" valueNumeric="4" />
+			<column name="number" valueNumeric="14" />
+			<column name="owner_id" valueNumeric="4" />
+			<column name="balance" valueNumeric="350" />
+			<column name="password" value="123" />
+			<column name="bank_id" valueNumeric="1" />
+		</insert>
+
+		<insert tableName="account">
+			<column name="id" valueNumeric="5" />
+			<column name="number" valueNumeric="15" />
+			<column name="owner_id" valueNumeric="5" />
+			<column name="balance" valueNumeric="160" />
+			<column name="password" value="123" />
+			<column name="bank_id" valueNumeric="2" />
+		</insert>
+	</changeSet>
+
+	<changeSet author="gilberto" id="insert-profile">
+		<insert tableName="profile">
+			<column name="id" valueNumeric="1" />
+			<column name="name" value="ROLE_ADMIN" />
+		</insert>
+
+		<insert tableName="profile">
+			<column name="id" valueNumeric="2" />
+			<column name="name" value="ROLE_COSTUMER" />
+		</insert>
+
+	</changeSet>
+
+	<changeSet author="gilberto" id="insert-user_profiles">
+		<insert tableName="user_profiles">
+			<column name="user_id" valueNumeric="1" />
+			<column name="profiles_id" valueNumeric="2" />
+		</insert>
+		<insert tableName="user_profiles">
+			<column name="user_id" valueNumeric="2" />
+			<column name="profiles_id" valueNumeric="2" />
+		</insert>
+		<insert tableName="user_profiles">
+			<column name="user_id" valueNumeric="3" />
+			<column name="profiles_id" valueNumeric="2" />
+		</insert>
+		<insert tableName="user_profiles">
+			<column name="user_id" valueNumeric="4" />
+			<column name="profiles_id" valueNumeric="2" />
+		</insert>
+		<insert tableName="user_profiles">
+			<column name="user_id" valueNumeric="5" />
+			<column name="profiles_id" valueNumeric="2" />
+		</insert>
+		<insert tableName="user_profiles">
+			<column name="user_id" valueNumeric="6" />
+			<column name="profiles_id" valueNumeric="1" />
+		</insert>
+
+	</changeSet>
+
+</databaseChangeLog>

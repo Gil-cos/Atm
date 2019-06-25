@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<changeSet author="gilberto" id="create-table-bank">
+		<createTable tableName="bank">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="name" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<rollback>
+			<dropTable tableName="bank" />
+		</rollback>
+	</changeSet>
+
+	<changeSet author="gilberto" id="create-table-user">
+		<createTable tableName="user">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="user_name" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="password" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<rollback>
+			<dropTable tableName="user" />
+		</rollback>
+	</changeSet>
+
+	<changeSet author="gilberto" id="create-table-account">
+		<createTable tableName="account">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="number" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+			<column name="owner_id" type="BIGINT">
+				<constraints nullable="false"
+					foreignKeyName="fk_account_user" references="user(id)" />
+			</column>
+			<column name="balance" type="DECIMAL(20, 2)">
+				<constraints nullable="false" />
+			</column>
+			<column name="password" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="bank_id" type="BIGINT">
+				<constraints nullable="false"
+					foreignKeyName="fk_account_bank" references="bank(id)" />
+			</column>
+		</createTable>
+		<rollback>
+			<dropTable tableName="account" />
+		</rollback>
+	</changeSet>
+
+	<changeSet author="gilberto" id="create-table-profile">
+		<createTable tableName="profile">
+			<column autoIncrement="true" name="id" type="BIGINT">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="name" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<rollback>
+			<dropTable tableName="profile" />
+		</rollback>
+	</changeSet>
+
+	<changeSet author="gilberto" id="create-table-user_profiles">
+		<createTable tableName="user_profiles">
+			<column name="user_id" type="BIGINT">
+				<constraints nullable="false" foreignKeyName="fk_user"
+					references="user(id)" />
+			</column>
+			<column name="profiles_id" type="BIGINT">
+				<constraints nullable="false" foreignKeyName="fk_profile"
+					references="profile(id)" />
+			</column>
+		</createTable>
+		<rollback>
+			<dropTable tableName="user_profiles" />
+		</rollback>
+	</changeSet>
+
+</databaseChangeLog>

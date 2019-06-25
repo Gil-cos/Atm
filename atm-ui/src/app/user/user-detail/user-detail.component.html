@@ -1,0 +1,94 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+  <div>
+    <mat-card class="example-card mat-elevation-z8">
+      <mat-card-header>
+        <mat-card-title>Owner: {{ account?.owner.userName }}</mat-card-title>
+        <mat-card-subtitle>Account Number: {{ account?.number }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <hr>
+        <p>
+          Balance: {{ account?.balance }}
+        </p>
+        <p>
+          Bank: {{ account?.bank.name }}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" [disabled]="withdraw" (click)="depositShow()">Deposit</button>
+        <button mat-raised-button color="primary" [disabled]="deposit" (click)="withdrawShow()">Withdraw</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+
+  <div *ngIf="deposit">
+    <mat-card class="mat-elevation-z8">
+      <mat-card-header>
+        <mat-card-title>Deposit</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+
+        <form [formGroup]="depositForm" fxLayout="column" fxLayoutGap="3%">
+
+          <div fxLayout="column" fxLayoutGap="-2.5%">
+            <mat-form-field>
+              <input matInput placeholder="Value" formControlName="value" autofocus>
+              <mat-error
+                *ngIf="depositForm.get('value').errors?.required && (depositForm.submitted || depositForm.get('value').touched)">
+                Value is <Strong>required!</Strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxLayout="column" fxLayoutGap="-2.5%">
+            <mat-form-field>
+              <input matInput #userNameInput placeholder="Password" formControlName="password" type="password">
+              <mat-error
+                *ngIf="depositForm.get('password').errors?.required && (depositForm.submitted || depositForm.get('password').touched)">
+                Password is <Strong>required!</Strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <button mat-raised-button color="primary" [disabled]="depositForm.invalid" (click)="depositRegister()">Ok</button>
+        </form>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div *ngIf="withdraw">
+    <mat-card class="mat-elevation-z8">
+      <mat-card-header>
+        <mat-card-title>Withdraw</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+
+        <form [formGroup]="withdrawForm" fxLayout="column" fxLayoutGap="3%">
+
+          <div fxLayout="column" fxLayoutGap="-2.5%">
+            <mat-form-field>
+              <input matInput placeholder="Value" formControlName="value" autofocus>
+              <mat-error
+                *ngIf="withdrawForm.get('value').errors?.required && (withdrawForm.submitted || withdrawForm.get('value').touched)">
+                Value is <Strong>required!</Strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxLayout="column" fxLayoutGap="-2.5%">
+            <mat-form-field>
+              <input matInput #userNameInput placeholder="Password" formControlName="password" type="password">
+              <mat-error
+                *ngIf="withdrawForm.get('password').errors?.required && (withdrawForm.submitted || withdrawForm.get('password').touched)">
+                Password is <Strong>required!</Strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <button mat-raised-button color="primary" [disabled]="withdrawForm.invalid" (click)="depositRegister()">Ok</button>
+        </form>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

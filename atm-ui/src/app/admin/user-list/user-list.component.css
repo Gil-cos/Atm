@@ -1,0 +1,18 @@
+table {
+    width: 100%;
+}
+
+.containers {
+    width: 98vw;
+    height: table;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.box {
+    width: 78vw;
+    height: table;
+}
