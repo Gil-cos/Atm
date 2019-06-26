@@ -17,13 +17,10 @@ public class UserDto {
 	
 	private String userName;
 
-	private String password;
-
 	private List<Profile> profiles = new ArrayList<>();
 
 	public UserDto(User newUser) {
 		this.userName = newUser.getUsername();
-		this.password = newUser.getPassword();
 		this.profiles = newUser.getProfiles();
 	}
 

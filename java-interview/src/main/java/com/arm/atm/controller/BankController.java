@@ -44,7 +44,7 @@ public class BankController {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<BankDto> getAccount(@PathVariable Long id) {
+	public ResponseEntity<BankDto> getBank(@PathVariable Long id) {
 
 		Optional<Bank> bank = bankService.findById(id);
 		if (bank.isPresent()) {
@@ -69,10 +69,10 @@ public class BankController {
 	@Transactional
 	public ResponseEntity<BankDto> updateBank(@RequestBody @Valid BankForm bankForm, @PathVariable Long id) {
 
-		Optional<Bank> bank =  bankService.findById(id);
-		if (bank.isPresent()) {
-			bank.get().setName(bankForm.getName());
-			return ResponseEntity.ok(new BankDto(bank.get()));
+		Optional<Bank> optional =  bankService.findById(id);
+		if (optional.isPresent()) {
+			Bank bank = bankForm.update(id, bankService);
+			return ResponseEntity.ok(new BankDto(bank));
 		}
 		
 		return ResponseEntity.notFound().build();
