@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import com.arm.atm.entity.Account;
 import com.arm.atm.entity.Bank;
 import com.arm.atm.entity.User;
+import com.arm.atm.service.AccountService;
 import com.arm.atm.service.BankService;
 import com.arm.atm.service.UserService;
 
@@ -39,5 +40,12 @@ public class AccountForm {
 		}
 		
 		return null;
+	}
+
+	public Account update(Long id, AccountService accountService) {
+		Account account = accountService.findById(id).get();
+		account.setPassword(this.password);
+		
+		return account;
 	}
 }

@@ -20,8 +20,8 @@ public class AccountService {
 		return accountRepository.findByNumberAndPassword(number, password);
 	}
 
-	public Account findById(Long accountId) {
-		return accountRepository.findById(accountId).get();
+	public Optional<Account> findById(Long accountId) {
+		return accountRepository.findById(accountId);
 	}
 
 	public Account save(Account newAccount) {

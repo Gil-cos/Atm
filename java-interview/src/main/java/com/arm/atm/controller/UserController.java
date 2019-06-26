@@ -23,9 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.arm.atm.dto.BankDto;
 import com.arm.atm.dto.UserDto;
-import com.arm.atm.entity.Bank;
 import com.arm.atm.entity.User;
 import com.arm.atm.form.UserForm;
 import com.arm.atm.service.UserService;
