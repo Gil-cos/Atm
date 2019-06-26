@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.arm.atm.Form.DepositForm;
 import com.arm.atm.component.Atm;
 import com.arm.atm.dto.BillDto;
 import com.arm.atm.dto.WithdrawResponse;
 import com.arm.atm.entity.Account;
+import com.arm.atm.form.DepositForm;
 import com.arm.atm.service.AccountService;
 import com.arm.atm.service.AtmService;
 

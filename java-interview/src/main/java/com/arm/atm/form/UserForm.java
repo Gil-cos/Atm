@@ -1,4 +1,4 @@
-package com.arm.atm.Form;
+package com.arm.atm.form;
 
 import java.util.ArrayList;
 import java.util.List;

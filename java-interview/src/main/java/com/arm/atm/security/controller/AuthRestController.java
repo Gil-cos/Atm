@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.arm.atm.Form.LoginForm;
 import com.arm.atm.dto.TokenDto;
+import com.arm.atm.form.LoginForm;
 import com.arm.atm.service.TokenService;
 
 @RestController

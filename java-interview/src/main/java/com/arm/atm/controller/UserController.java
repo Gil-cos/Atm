@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.arm.atm.Form.UserForm;
 import com.arm.atm.dto.UserDto;
 import com.arm.atm.entity.User;
+import com.arm.atm.form.UserForm;
 import com.arm.atm.service.UserService;
 
 @RestController
@@ -33,6 +33,16 @@ public class UserController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@GetMapping(value = "/{page}/{size}")
+	public Page<User> listUsers(@PathVariable Integer page, @PathVariable Integer size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+		
+		Page<User> user = userService.findAll(pageable);
+		
+		return user;
+	}
+
 	@PostMapping()
 	public ResponseEntity<UserDto> signup(@RequestBody @Valid UserForm userForm, UriComponentsBuilder uriBuilder) {
 
@@ -44,13 +54,4 @@ public class UserController {
 		return ResponseEntity.created(uri).body(new UserDto(newUser));
 	}
 
-	@GetMapping(value = "/{page}/{size}")
-	public Page<User> listUsers(@PathVariable Integer page, @PathVariable Integer size) {
-
-		Pageable pageable = PageRequest.of(page, size);
-
-		Page<User> user = userService.findAll(pageable);
-
-		return user;
-	}
 }

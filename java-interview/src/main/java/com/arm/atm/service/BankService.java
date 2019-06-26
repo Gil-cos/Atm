@@ -31,5 +31,9 @@ public class BankService {
 	public Page<Bank> findAll(Pageable pageable){
 		return bankRepository.findAll(pageable);
 	}
+
+	public void deleteById(Long id) {
+		bankRepository.deleteById(id);
+	}
 	
 }

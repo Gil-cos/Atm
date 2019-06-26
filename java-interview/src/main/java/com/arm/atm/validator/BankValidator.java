@@ -5,8 +5,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.arm.atm.Form.AccountForm;
 import com.arm.atm.entity.Bank;
+import com.arm.atm.form.AccountForm;
 import com.arm.atm.service.BankService;
 
 @Component

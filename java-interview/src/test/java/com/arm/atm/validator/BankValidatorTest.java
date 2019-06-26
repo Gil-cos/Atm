@@ -9,8 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.arm.atm.Form.AccountForm;
 import com.arm.atm.entity.Bank;
+import com.arm.atm.form.AccountForm;
 import com.arm.atm.service.BankService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -27,7 +27,7 @@ public class BankValidatorTest {
 
 		when(bankService.findById(1l).get()).thenReturn(new Bank(1l, "Bradesco"));
 
-		AccountForm accountForm = new AccountForm(1l, "Carlos", 11l, "123");
+		AccountForm accountForm = new AccountForm(1l, 11l, "123");
 		Bank bank = new Bank(1l, "Bradesco");
 		
 		assertEquals(bank, bankValidator.validateBank(accountForm));
@@ -38,7 +38,7 @@ public class BankValidatorTest {
 
 		when(bankService.findById(1l)).thenReturn(null);
 
-		AccountForm accountForm = new AccountForm(1l, "Carlos", 11l, "123");
+		AccountForm accountForm = new AccountForm(1l, 11l, "123");
 		
 		bankValidator.validateBank(accountForm);
 	}

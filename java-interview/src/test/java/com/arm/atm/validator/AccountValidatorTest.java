@@ -11,8 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.arm.atm.Form.AccountForm;
 import com.arm.atm.entity.Account;
+import com.arm.atm.form.AccountForm;
 import com.arm.atm.service.AccountService;
 import com.arm.atm.validator.AccountValidator;
 
