@@ -15,7 +15,6 @@ import com.arm.atm.entity.User;
 import com.arm.atm.service.TokenService;
 import com.arm.atm.service.UserService;
 
-
 public class AuthTokenFilter extends OncePerRequestFilter {
 	
 	private TokenService tokenService;

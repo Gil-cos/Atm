@@ -19,18 +19,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class SimpleCORSFilter implements Filter {
+public class SimpleCorsFilter implements Filter {
 
 	private final Log logger = LogFactory.getLog(this.getClass());
 
 	@Override
 	public void init(FilterConfig fc) throws ServletException {
-		logger.info("Alurapic-API | SimpleCORSFilter loaded");
+		logger.info("ATM-API | SimpleCORSFilter loaded");
 	}
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
+		
 		HttpServletResponse response = (HttpServletResponse) resp;
 		HttpServletRequest request = (HttpServletRequest) req;
 		response.setHeader("Access-Control-Allow-Origin", "*");

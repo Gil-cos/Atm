@@ -28,9 +28,11 @@ public class AtmServiceTest {
 	@Test
 	public void canDeposit() {
 
-		when(accountService.findById(1l)).thenReturn(new Account(1l, 11l, null, new BigDecimal(500), "123", null));
-		Account account = accountService.findById(1L);
+		when(accountService.findById(1l).get()).thenReturn(new Account(1l, 11l, null, new BigDecimal(500), "123", null));
+		Account account = accountService.findById(1L).get();
 
+		System.out.println(account);
+		
 		atmService.deposit(new BigDecimal(500), account);
 		
 		assertEquals(new BigDecimal(1000), account.getBalance());
@@ -39,8 +41,8 @@ public class AtmServiceTest {
 	@Test
 	public void canWithdraw() {
 
-		when(accountService.findById(1l)).thenReturn(new Account(1l, 11l, null, new BigDecimal(500), "123", null));
-		Account account = accountService.findById(1L);
+		when(accountService.findById(1l).get()).thenReturn(new Account(1l, 11l, null, new BigDecimal(500), "123", null));
+		Account account = accountService.findById(1L).get();
 
 		atmService.withdraw(new BigDecimal(500), account);
 		
@@ -50,8 +52,8 @@ public class AtmServiceTest {
 	@Test(expected = RuntimeException.class)
 	public void cantWithdraw() {
 
-		when(accountService.findById(1l)).thenReturn(new Account(1l, 11l, null, new BigDecimal(500), "123", null));
-		Account account = accountService.findById(1L);
+		when(accountService.findById(1l).get()).thenReturn(new Account(1l, 11l, null, new BigDecimal(500), "123", null));
+		Account account = accountService.findById(1L).get();
 
 		atmService.withdraw(new BigDecimal(600), account);
 		
@@ -66,27 +68,12 @@ public class AtmServiceTest {
 		
 		billsExpected.add(new BillDto(100, 5));
 		billsExpected.add(new BillDto(50, 1));
-		billsExpected.add(new BillDto(20, 2));
-		billsExpected.add(new BillDto(10, 0));
+		billsExpected.add(new BillDto(20, 1));
+		billsExpected.add(new BillDto(10, 1));
 		
-		bills = atmService.numberOfBills(new BigDecimal(590));
+		bills = atmService.numberOfBills(new BigDecimal(580));
 		
 		assertEquals(billsExpected, bills);
 	}
 	
-	@Test
-	public void canCountNumberOfBillsIn10() {
-
-		List<BillDto> billsExpected = new ArrayList<BillDto>();
-		List<BillDto> bills = new ArrayList<BillDto>();
-		
-		billsExpected.add(new BillDto(100, 0));
-		billsExpected.add(new BillDto(50, 0));
-		billsExpected.add(new BillDto(20, 0));
-		billsExpected.add(new BillDto(10, 1));
-		
-		bills = atmService.numberOfBills(new BigDecimal(10));
-		
-		assertEquals(billsExpected, bills);
-	}
 }

@@ -62,13 +62,6 @@
 				value="$2a$10$mfoM1/6BxdpuP0Qx69RGvO1LAEcvXiXfoM33Sqy2M3P1isU0U8Bf6" />
 		</insert>
 
-		<insert tableName="user">
-			<column name="id" valueNumeric="7" />
-			<column name="user_name" value="Gilberto" />
-			<column name="password"
-				value="$2a$10$mfoM1/6BxdpuP0Qx69RGvO1LAEcvXiXfoM33Sqy2M3P1isU0U8Bf6" />
-		</insert>
-
 	</changeSet>
 
 	<changeSet author="gilberto" id="insert-account">
