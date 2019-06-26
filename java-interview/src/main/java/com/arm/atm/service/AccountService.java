@@ -48,4 +48,8 @@ public class AccountService {
 		return accountRepository.findByBankAndOwnerUserName(bankId, ownerName);
 	}
 
+	public void deleteById(Long id) {
+		accountRepository.deleteById(id);
+	}
+
 }

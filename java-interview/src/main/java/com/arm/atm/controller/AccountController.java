@@ -11,7 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,11 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.arm.atm.dto.AccountDto;
-import com.arm.atm.dto.UserDto;
 import com.arm.atm.entity.Account;
-import com.arm.atm.entity.User;
 import com.arm.atm.form.AccountForm;
-import com.arm.atm.form.UserForm;
 import com.arm.atm.service.AccountService;
 import com.arm.atm.service.BankService;
 import com.arm.atm.service.UserService;
@@ -93,6 +90,18 @@ public class AccountController {
 		if (optional.isPresent()) {
 			Account account = accountForm.update(id, accountService);
 			return ResponseEntity.ok(new AccountDto(account));
+		}
+		
+		return ResponseEntity.notFound().build();
+	}
+	
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<?> deleteAccount(@PathVariable Long id) {
+		
+		Optional<Account> account = accountService.findById(id);
+		if (account.isPresent()) {
+			accountService.deleteById(id);
+			return ResponseEntity.ok().build();
 		}
 		
 		return ResponseEntity.notFound().build();
