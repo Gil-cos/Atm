@@ -1,9 +1,10 @@
 package com.arm.atm.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.arm.atm.entity.User;
@@ -19,15 +20,15 @@ public class UserService {
 		return userRepository.save(user);
 	}
 	
-	public User findById(Long userId) {
-		return userRepository.findById(userId).get();
+	public Optional<User> findById(Long userId) {
+		return userRepository.findById(userId);
 	}
 
 	public Optional<User> findByUserName(String userName) {
 		return userRepository.findByUserName(userName);
 	}
 
-	public List<User> findAll() {
-		return userRepository.findAll();
+	public Page<User> findAll(Pageable pageable) {
+		return userRepository.findAll(pageable);
 	}
 }

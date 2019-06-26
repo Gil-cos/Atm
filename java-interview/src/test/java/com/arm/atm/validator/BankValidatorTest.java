@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.arm.atm.dto.AccountForm;
+import com.arm.atm.Form.AccountForm;
 import com.arm.atm.entity.Bank;
 import com.arm.atm.service.BankService;
 
@@ -25,7 +25,7 @@ public class BankValidatorTest {
 	@Test
 	public void canValidateBank() {
 
-		when(bankService.findById(1l)).thenReturn(new Bank(1l, "Bradesco"));
+		when(bankService.findById(1l).get()).thenReturn(new Bank(1l, "Bradesco"));
 
 		AccountForm accountForm = new AccountForm(1l, "Carlos", 11l, "123");
 		Bank bank = new Bank(1l, "Bradesco");

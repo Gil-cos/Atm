@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
-import com.arm.atm.dto.AccountForm;
+import com.arm.atm.Form.AccountForm;
 import com.arm.atm.entity.Account;
 import com.arm.atm.entity.Bank;
 import com.arm.atm.entity.User;

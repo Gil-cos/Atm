@@ -13,7 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.arm.atm.dto.Bill;
+import com.arm.atm.dto.BillDto;
 import com.arm.atm.entity.Account;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -61,13 +61,13 @@ public class AtmServiceTest {
 	@Test
 	public void canCountNumberOfBills() {
 
-		List<Bill> billsExpected = new ArrayList<Bill>();
-		List<Bill> bills = new ArrayList<Bill>();
+		List<BillDto> billsExpected = new ArrayList<BillDto>();
+		List<BillDto> bills = new ArrayList<BillDto>();
 		
-		billsExpected.add(new Bill(100, 5));
-		billsExpected.add(new Bill(50, 1));
-		billsExpected.add(new Bill(20, 2));
-		billsExpected.add(new Bill(10, 0));
+		billsExpected.add(new BillDto(100, 5));
+		billsExpected.add(new BillDto(50, 1));
+		billsExpected.add(new BillDto(20, 2));
+		billsExpected.add(new BillDto(10, 0));
 		
 		bills = atmService.numberOfBills(new BigDecimal(590));
 		
@@ -77,13 +77,13 @@ public class AtmServiceTest {
 	@Test
 	public void canCountNumberOfBillsIn10() {
 
-		List<Bill> billsExpected = new ArrayList<Bill>();
-		List<Bill> bills = new ArrayList<Bill>();
+		List<BillDto> billsExpected = new ArrayList<BillDto>();
+		List<BillDto> bills = new ArrayList<BillDto>();
 		
-		billsExpected.add(new Bill(100, 0));
-		billsExpected.add(new Bill(50, 0));
-		billsExpected.add(new Bill(20, 0));
-		billsExpected.add(new Bill(10, 1));
+		billsExpected.add(new BillDto(100, 0));
+		billsExpected.add(new BillDto(50, 0));
+		billsExpected.add(new BillDto(20, 0));
+		billsExpected.add(new BillDto(10, 1));
 		
 		bills = atmService.numberOfBills(new BigDecimal(10));
 		

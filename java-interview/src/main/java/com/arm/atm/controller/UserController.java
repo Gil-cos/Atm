@@ -1,22 +1,25 @@
 package com.arm.atm.controller;
 
-import static org.springframework.http.HttpStatus.OK;
+import java.net.URI;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import com.arm.atm.Form.UserForm;
+import com.arm.atm.dto.UserDto;
 import com.arm.atm.entity.User;
 import com.arm.atm.service.UserService;
 
@@ -31,22 +34,23 @@ public class UserController {
 	private PasswordEncoder passwordEncoder;
 
 	@PostMapping()
-	public ResponseEntity<User> signup(HttpServletRequest request, @RequestBody User user, BindingResult result) {
+	public ResponseEntity<UserDto> signup(@RequestBody @Valid UserForm userForm, UriComponentsBuilder uriBuilder) {
 
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		//user.setProfile(ProfileEnum.ROLE_CUSTOMER);
+		User newUser = userForm.convert(passwordEncoder);
+		userService.save(newUser);
 
-		User userPersisted = userService.save(user);
+		URI uri = uriBuilder.path("/api/user/{id}").buildAndExpand(newUser.getId()).toUri();
 
-		return new ResponseEntity<User>(userPersisted, HttpStatus.OK);
-
+		return ResponseEntity.created(uri).body(new UserDto(newUser));
 	}
-	
-	@GetMapping()
-	public ResponseEntity<List<User>> listUsers() {
 
-		List<User> userDb = userService.findAll();
+	@GetMapping(value = "/{page}/{size}")
+	public Page<User> listUsers(@PathVariable Integer page, @PathVariable Integer size) {
 
-		return new ResponseEntity<List<User>>(userDb, OK);
+		Pageable pageable = PageRequest.of(page, size);
+
+		Page<User> user = userService.findAll(pageable);
+
+		return user;
 	}
 }

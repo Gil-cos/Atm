@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class WithdrawResponse {
 
-	private List<Bill> data;
+	private List<BillDto> data;
 	private String message;
 
 }

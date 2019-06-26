@@ -1,12 +1,12 @@
 package com.arm.atm.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.arm.atm.dto.AccountForm;
 import com.arm.atm.entity.Bank;
 import com.arm.atm.repository.BankRepository;
 
@@ -16,8 +16,8 @@ public class BankService {
 	@Autowired
 	private BankRepository bankRepository;
 	
-	public Bank findById(Long bankId) {
-		return bankRepository.findById(bankId).get();
+	public Optional<Bank> findById(Long bankId) {
+		return bankRepository.findById(bankId);
 	}
 	
 	public Bank findByName(String name) {
@@ -28,14 +28,8 @@ public class BankService {
 		return bankRepository.save(newBank);
 	}
 	
-	public List<Bank> findAll(){
-		return bankRepository.findAll();
-	}
-	
-	public Bank validateBank(AccountForm accountForm) {
-		Bank bank = findById(accountForm.getBankId());
-
-		return Optional.ofNullable(bank).orElseThrow(() -> new RuntimeException("Bank does not exist."));
+	public Page<Bank> findAll(Pageable pageable){
+		return bankRepository.findAll(pageable);
 	}
 	
 }

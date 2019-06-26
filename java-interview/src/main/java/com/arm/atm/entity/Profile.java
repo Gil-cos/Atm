@@ -7,9 +7,13 @@ import javax.persistence.Id;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Profile implements GrantedAuthority {
 	

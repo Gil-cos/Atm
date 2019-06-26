@@ -1,8 +1,10 @@
 package com.arm.atm.service;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.arm.atm.entity.Account;
@@ -26,8 +28,8 @@ public class AccountService {
 		return accountRepository.save(newAccount);
 	}
 
-	public List<Account> findAll() {
-		return accountRepository.findAll();
+	public Page<Account> findAll(Pageable pageable) {
+		return accountRepository.findAll(pageable);
 	}
 
 	public Account findByBankNameAndAccount(String bankName, Long Accountnumber, String Accountpassword) {
@@ -38,8 +40,12 @@ public class AccountService {
 		return accountRepository.findByBankAndNumber(bankId, number);
 	}
 
-	public Account findByOwnerUserName(String name) {
+	public Optional<Account> findByOwnerUserName(String name) {
 		return accountRepository.findByOwnerUserName(name);
+	}
+
+	public Optional<Account> findByBankAndOwnerUserName(Long bankId, String ownerName) {
+		return accountRepository.findByBankAndOwnerUserName(bankId, ownerName);
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.arm.atm.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,5 +20,7 @@ public interface AccountRepository extends JpaRepository<Account, Long>{
 	@Query("FROM Account a WHERE a.number = :number AND a.bank.id = :bankId")
 	Account findByBankAndNumber(@Param("bankId") Long bankId, @Param("number") Long number);
 
-	Account findByOwnerUserName(String name);
+	Optional<Account> findByOwnerUserName(String name);
+
+	Optional<Account> findByBankAndOwnerUserName(Long bankId, String ownerName);
 }

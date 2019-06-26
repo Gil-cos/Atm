@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.arm.atm.dto.Bill;
+import com.arm.atm.dto.BillDto;
 import com.arm.atm.entity.Account;
 
 @Service
@@ -37,10 +37,10 @@ public class AtmService {
 		}
 	}
 
-	public List<Bill> numberOfBills(BigDecimal value) {
+	public List<BillDto> numberOfBills(BigDecimal value) {
 
 		Integer valueInt = value.intValue();
-		List<Bill> bills = new ArrayList<Bill>();
+		List<BillDto> bills = new ArrayList<BillDto>();
 
 		int[] notas = { 0, 0, 0, 0 };
 		int[] values = { 100, 50, 20, 10 };
@@ -62,7 +62,7 @@ public class AtmService {
 		}
 
 		for (int i = 0; i < notas.length; i++) {
-			bills.add(new Bill(values[i], notas[i]));
+			bills.add(new BillDto(values[i], notas[i]));
 		}
 
 		return bills;

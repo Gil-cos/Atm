@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Bill {
+public class BillDto {
 	
 	private Integer value;
 	private Integer amount;

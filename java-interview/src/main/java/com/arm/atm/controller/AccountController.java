@@ -1,10 +1,14 @@
 package com.arm.atm.controller;
 
-import static org.springframework.http.HttpStatus.OK;
+import java.net.URI;
+import java.util.Optional;
 
-import java.util.List;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,16 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import com.arm.atm.component.AccountParser;
-import com.arm.atm.dto.AccountForm;
+import com.arm.atm.Form.AccountForm;
+import com.arm.atm.dto.AccountDto;
 import com.arm.atm.entity.Account;
-import com.arm.atm.entity.Bank;
-import com.arm.atm.entity.User;
 import com.arm.atm.service.AccountService;
 import com.arm.atm.service.BankService;
 import com.arm.atm.service.UserService;
-import com.arm.atm.validator.AccountValidator;
 
 @RestController
 @RequestMapping("api/account")
@@ -36,46 +38,44 @@ public class AccountController {
 	@Autowired
 	private UserService userService;
 
-	@Autowired
-	private AccountParser accountParser;
-	
-	@Autowired
-	private AccountValidator accountValidator;
+	@GetMapping(value = "/{page}/{size}")
+	public Page<AccountDto> listAccounts(@PathVariable Integer page, @PathVariable Integer size) {
 
-	@GetMapping()
-	public ResponseEntity<List<Account>> listAccounts() {
+		Pageable pageable = PageRequest.of(page, size);
 
-		List<Account> accountDb = accountService.findAll();
+		Page<Account> accounts = accountService.findAll(pageable);
 
-		return new ResponseEntity<List<Account>>(accountDb, OK);
+		return AccountDto.convert(accounts);
 	}
-	
+
 	@GetMapping(value = "/{name}")
-	public ResponseEntity<Account> getAccount(@PathVariable String name) {
+	public ResponseEntity<AccountDto> getAccount(@PathVariable String name) {
 
-		Account accountDb = accountService.findByOwnerUserName(name);
+		Optional<Account> account = accountService.findByOwnerUserName(name);
+		if (account.isPresent()) {
+			return ResponseEntity.ok(new AccountDto(account.get()));
+		}
 
-		return new ResponseEntity<Account>(accountDb, OK);
+		return ResponseEntity.notFound().build();
 	}
 
 	@PostMapping(value = "/{userId}")
-	public ResponseEntity<Account> createAccount(@RequestBody AccountForm accountForm, @PathVariable Long userId) {
+	public ResponseEntity<AccountDto> createAccount(@RequestBody @Valid AccountForm accountForm, @PathVariable Long userId,
+			UriComponentsBuilder uriBuilder) {
 
-		System.out.println(accountForm);
-		if (accountValidator.validateAccount(accountForm)) {
-			
-			Bank bank = bankService.validateBank(accountForm);
-			User user = userService.findById(userId);
-			
-			Account newAccount = accountParser.parse(accountForm, bank, user);
-			Account accountDb = accountService.save(newAccount);
+		try {
 
-			return new ResponseEntity<Account>(accountDb, OK);
+			Account newAccount = accountForm.converter(userService, bankService, userId);
+			accountService.save(newAccount);
+
+			URI uri = uriBuilder.path("/api/account/{name}").buildAndExpand(newAccount.getOwner().getUsername())
+					.toUri();
+
+			return ResponseEntity.created(uri).body(new AccountDto(newAccount));
 			
-		} else {
-			
-			return ResponseEntity.badRequest().body(null);
+
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
 		}
-
 	}
 }
