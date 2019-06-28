@@ -1,7 +1,5 @@
 package com.arm.atm.controller;
 
-import static org.springframework.http.HttpStatus.OK;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.arm.atm.component.Atm;
 import com.arm.atm.dto.BillDto;
-import com.arm.atm.dto.WithdrawResponse;
-import com.arm.atm.entity.Account;
+import com.arm.atm.dto.TransactionDto;
+import com.arm.atm.dto.WithdrawDto;
+import com.arm.atm.form.BalanceForm;
 import com.arm.atm.form.DepositForm;
+import com.arm.atm.form.WithdrawForm;
 import com.arm.atm.service.AccountService;
-import com.arm.atm.service.AtmService;
 
 @RestController
 @RequestMapping("api/atm")
@@ -29,84 +28,67 @@ public class AtmController {
 	@Autowired
 	private AccountService accountService;
 	
-	@Autowired
-	private AtmService atmService;
 
 	@PostMapping(value = "/deposit")
-	public ResponseEntity<String> deposit(@RequestBody DepositForm depositForm) {
+	public ResponseEntity<TransactionDto> deposit(@RequestBody DepositForm depositForm) {
+
+		TransactionDto transactionDto = new TransactionDto();
 
 		try {
-			atm.authenticate(depositForm.getBankName(), depositForm.getAccountNumber(),
-					depositForm.getPassword());
 
-			Account account = accountService.findByBankNameAndAccount(depositForm.getBankName(),
-					depositForm.getAccountNumber(), depositForm.getPassword());
+			atm.authenticate(depositForm.getBankName(), depositForm.getAccountNumber(), depositForm.getPassword());
+			depositForm.deposit(accountService);
+			transactionDto.setMessage("Deposit successfull");
 
-			atmService.deposit(depositForm.getValue(), account);
+			return ResponseEntity.ok(transactionDto);
 
 		} catch (Exception e) {
 
-			return ResponseEntity.badRequest().body(e.getMessage());
+			transactionDto.	setMessage(e.getMessage());
+			return ResponseEntity.badRequest().body(transactionDto);
 		}
-
-		return new ResponseEntity<String>("Deposit successfull", OK);
 	}
 
 	@PostMapping(value = "/withdraw")
-	public ResponseEntity<WithdrawResponse> withdraw(@RequestBody DepositForm depositForm) {
+	public ResponseEntity<WithdrawDto> withdraw(@RequestBody WithdrawForm withdrawForm) {
 
-		List<BillDto> bills;
-		WithdrawResponse response = new WithdrawResponse();
-		
-		if (depositForm.getValue().intValue() % 10 == 0) {
+		WithdrawDto withdrawDto = new WithdrawDto();
+
+		try {
+			atm.authenticate(withdrawForm.getBankName(), withdrawForm.getAccountNumber(), withdrawForm.getPassword());
 			
-			try {
-				atm.authenticate(depositForm.getBankName(), depositForm.getAccountNumber(),
-						depositForm.getPassword());
-				
-				Account account = accountService.findByBankNameAndAccount(depositForm.getBankName(),
-						depositForm.getAccountNumber(), depositForm.getPassword());
-				
-				bills = atmService.numberOfBills(depositForm.getValue());
-				
-				atmService.withdraw(depositForm.getValue(), account);
-				
-				response.setMessage("Withdraw successfull");
-				response.setData(bills);
-				
-			} catch (Exception e) {
-				response.setMessage(e.getMessage());
-				return ResponseEntity.badRequest().body(response);
-			}
+			List<BillDto> bills = BillDto.numberOfBills(withdrawForm.getValue());
+
+			withdrawForm.withdraw(accountService);
+			withdrawDto.setBills(bills);
+			withdrawDto.setMessage("Withdraw Sucessfull");
 			
-			return new ResponseEntity<WithdrawResponse>(response, OK);
+			return ResponseEntity.ok().body(withdrawDto);
+
+		} catch (Exception e) {
 			
-		} else {
-			response.setMessage("Invalid Value");
-			return ResponseEntity.badRequest().body(response);
+			withdrawDto.setMessage(e.getMessage());
+			return ResponseEntity.badRequest().body(withdrawDto);
 		}
-
 	}
 
 	@PostMapping(value = "/balance")
-	public ResponseEntity<String> balance(@RequestBody DepositForm depositForm) {
+	public ResponseEntity<TransactionDto> balance(@RequestBody BalanceForm balanceForm) {
 
-		Account account;
+		TransactionDto transactionDto = new TransactionDto();
 
 		try {
-			atm.authenticate(depositForm.getBankName(), depositForm.getAccountNumber(),
-					depositForm.getPassword());
 
-			account = accountService.findByBankNameAndAccount(depositForm.getBankName(), depositForm.getAccountNumber(),
-					depositForm.getPassword());
+			atm.authenticate(balanceForm.getBankName(), balanceForm.getAccountNumber(), balanceForm.getPassword());
+			transactionDto.setMessage("Balance: " + balanceForm.balance(accountService));
+
+			return ResponseEntity.ok(transactionDto);
 
 		} catch (Exception e) {
 
-			return ResponseEntity.badRequest().body(e.getMessage());
+			transactionDto.setMessage(e.getMessage());
+			return ResponseEntity.badRequest().body(transactionDto);
 		}
-
-		return new ResponseEntity<String>("Balance: " + account.getBalance(), OK);
 	}
 
-	
 }

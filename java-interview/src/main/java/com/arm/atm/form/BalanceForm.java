@@ -1,7 +1,5 @@
 package com.arm.atm.form;
 
-import java.math.BigDecimal;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -11,7 +9,7 @@ import com.arm.atm.service.AccountService;
 import lombok.Data;
 
 @Data
-public class DepositForm {
+public class BalanceForm {
 
 	@NotNull
 	@NotEmpty
@@ -24,15 +22,10 @@ public class DepositForm {
 	@NotEmpty
 	private String password;
 
-	@NotNull
-	private BigDecimal value;
-
-	public void deposit(AccountService accountService) {
+	public String balance(AccountService accountService) {
 
 		Account account = accountService.findByBankNameAndAccount(this.bankName, this.accountNumber, this.password);
-
-		account.setBalance(account.getBalance().add(this.value));
-		accountService.save(account);
+		return account.getBalance().toString();
 
 	}
 

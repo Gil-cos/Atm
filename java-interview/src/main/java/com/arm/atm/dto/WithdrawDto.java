@@ -5,9 +5,9 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class WithdrawResponse {
+public class WithdrawDto {
 
-	private List<BillDto> data;
+	private List<BillDto> bills;
 	private String message;
 
 }
