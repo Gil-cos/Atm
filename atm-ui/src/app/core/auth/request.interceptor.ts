@@ -19,7 +19,7 @@ export class RequestInterceptor implements HttpInterceptor {
         | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
 
         if (this.tokenService.hasToken()) {
-            const token = this.tokenService.getToken();
+            const token = this.tokenService.getToken(); 
             req = req.clone({
                 setHeaders: {
                     'Authorization': token

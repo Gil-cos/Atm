@@ -1,7 +1,10 @@
 package com.arm.atm.service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Service
 public class TokenService {
 	
+    static final String CLAIM_KEY_ID = "id";
+    static final String CLAIM_KEY_USERNAME = "name";
+
 	@Value("${jwt.expiration}")
 	private String expiration;
 	
@@ -27,13 +33,23 @@ public class TokenService {
 		Date expirationDate = new Date(date.getTime() + Long.parseLong(expiration));
 		
 		return Jwts.builder()
-				.setIssuer("API do Fórum da Alura")
-				.setSubject(user.getId().toString())
+				.setIssuer("API ATM")
+				.setClaims(getClaims(user))
 				.setIssuedAt(date)
+				.setSubject(user.getId().toString())
 				.setExpiration(expirationDate)
 				.signWith(SignatureAlgorithm.HS256, secret)
 				.compact();
 	}
+	
+    public Map<String, Object> getClaims(User user) {
+        Map<String, Object> claims = new HashMap<>();
+
+        claims.put(CLAIM_KEY_USERNAME, user.getUsername());
+        claims.put(CLAIM_KEY_ID, user.getId());
+
+        return claims;
+    }
 
 	public boolean isTokenValido(String token) {
 		try {

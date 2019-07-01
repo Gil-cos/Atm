@@ -9,8 +9,8 @@ export class TokenService {
         return !!this.getToken();
     }
 
-    setToken(token) {
-        window.localStorage.setItem(KEY, token);
+    setToken(token, type) {
+        window.localStorage.setItem(KEY, type + " " + token);
     }
 
     getToken() {
@@ -20,4 +20,5 @@ export class TokenService {
     removeToken() {
         window.localStorage.removeItem(KEY);
     }
+
 }

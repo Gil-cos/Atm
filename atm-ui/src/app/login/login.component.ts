@@ -4,7 +4,7 @@ import { UserAuthenticated } from '../core/model/UserAuthenticated';
 import { AuthService } from '../core/auth/auth.service';
 import { UserService } from '../core/user/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CurrentUser } from '../core/model/CurrentUser';
+import { TokenDto } from '../core/model/TokenDto';
 
 @Component({
   selector: 'app-login',
@@ -40,23 +40,20 @@ export class LoginComponent implements OnInit {
 
 
     this.authService
-        .authenticate(this.userAuthenticated)
-        .subscribe(
-            (currentUser: CurrentUser) => {
-                this.userService.setToken(currentUser.token);
-                if (currentUser.user.id == 6) {
-                  this.router.navigate(['admin'])
-                } else {
-                  this.router.navigate(['user'])
-                }
-                
-            },
-            err => {
-                console.log(err);
-                this.loginForm.reset();
-                alert('Invalid user name or password');
-            }
-        );
-}
+      .authenticate(this.userAuthenticated)
+      .subscribe(
+        (tokenDto: TokenDto) => {
+          this.userService.setToken(tokenDto.token, tokenDto.type);
+
+          this.router.navigate(['user'])
+
+        },
+        err => {
+          console.log(err);
+          this.loginForm.reset();
+          alert('Invalid user name or password');
+        }
+      );
+  }
 
 }
