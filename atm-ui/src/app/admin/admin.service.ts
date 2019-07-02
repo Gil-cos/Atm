@@ -1,10 +1,8 @@
-
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AccountForm } from 'src/app/core/model/AccountForm';
 import { NewUser } from 'src/app/core/model/NewUser';
 import { environment } from 'src/environments/environment';
-import { AccountForm } from 'src/app/core/model/AccountForm';
-import { UserResponse } from 'src/app/core/model/UserResponse';
 
 const API = environment.ApiUrl;
 
@@ -13,7 +11,7 @@ const httpOptions = {
 };
 
 @Injectable()
-export class UserRegisterService {
+export class AdminService {
 
   constructor(
     private http: HttpClient
@@ -29,8 +27,8 @@ export class UserRegisterService {
     return this.http.post(`${API}/api/account/${userId}`, body, httpOptions);
   }
 
-  getUsers() {
-    return this.http.get<UserResponse[]>(`${API}/api/user`);
+  getUsers(page: number, size: number) {
+    return this.http.get(`${API}/api/user/${page}/${size}`);
   }
 
 

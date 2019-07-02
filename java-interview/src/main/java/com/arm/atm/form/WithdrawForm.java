@@ -32,7 +32,11 @@ public class WithdrawForm {
 		Account account;
 		account = accountService.findByBankNameAndAccount(this.bankName, this.accountNumber, this.password);
 
-		if (account.getBalance().intValue() >= value.intValue() && this.value.intValue() % 10 == 0) {
+		if (this.value.intValue() % 10 != 0) {
+			throw new RuntimeException("Invalid value");	
+		} 
+		
+		if (account.getBalance().intValue() >= value.intValue()) {
 			account.setBalance(account.getBalance().subtract(value));
 			accountService.save(account);
 

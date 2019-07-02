@@ -4,7 +4,9 @@ import { UserService } from 'src/app/core/user/user.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { DepositForm } from '../../core/model/DepositForm';
 import { Router } from '@angular/router';
-import { Account } from '../../core/model/Account';
+import { AccountDto } from '../../core/model/AccountDto';
+import { MatSnackBar } from '@angular/material';
+import { TransactionDto } from 'src/app/core/model/TransactionDto';
 
 @Component({
   selector: 'app-user-detail',
@@ -15,7 +17,7 @@ export class UserDetailComponent implements OnInit {
 
   depositForm: FormGroup;
   withdrawForm: FormGroup;
-  account: Account;
+  account: AccountDto;
   accountId: number;
   deposit: boolean = false;
   withdraw: boolean = false;
@@ -25,6 +27,7 @@ export class UserDetailComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private router: Router,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -46,36 +49,43 @@ export class UserDetailComponent implements OnInit {
   depositRegister() {
     if (this.depositForm.valid && !this.depositForm.pending) {
       let deposit = this.depositForm.getRawValue() as DepositForm;
-      deposit.bankName = this.account.bank.name;
+      deposit.bankName = this.account.bank;
       deposit.accountNumber = this.account.number;
 
       this.accountService
         .registerDeposit(deposit)
         .subscribe(
-          () => {
-            this.router.navigate(['user']);
+          (transactionDto: TransactionDto) => {
+            this.deposit = !this.deposit;
+            this.depositForm.reset();
+            this.openSnackBar(transactionDto.message, 'Ok');
           },
           err => {
             console.log(err);
+            this.depositForm.reset();
+            this.openSnackBar(err.error.message, 'Ok');
           }
         );
     }
   }
 
   withdrawRegister() {
-    if (this.depositForm.valid && !this.depositForm.pending) {
-      let deposit = this.depositForm.getRawValue() as DepositForm;
-      deposit.bankName = this.account.bank.name;
+    if (this.withdrawForm.valid && !this.withdrawForm.pending) {
+      let deposit = this.withdrawForm.getRawValue() as DepositForm;
+      deposit.bankName = this.account.bank;
       deposit.accountNumber = this.account.number;
 
       this.accountService
         .registerWithdraw(deposit)
         .subscribe(
-          () => {
-            this.router.navigate(['user']);
+          (transactionDto: TransactionDto) => {
+            this.withdraw = !this.withdraw;
+            this.withdrawForm.reset();
+            this.openSnackBar(transactionDto.message, 'Ok');
           },
           err => {
-            console.log(err);
+            this.withdrawForm.reset();
+            this.openSnackBar(err.error.message, 'Ok');
           }
         );
     }
@@ -87,6 +97,12 @@ export class UserDetailComponent implements OnInit {
 
   withdrawShow() {
     this.withdraw = !this.withdraw;
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 
 

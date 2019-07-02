@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NewUser } from 'src/app/core/model/NewUser';
-import { UserRegisterService } from './user-register.service';
+import { AdminService } from '../admin.service';
 
 @Component({
   selector: 'app-user-register',
@@ -16,7 +16,7 @@ export class UserRegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private userRegisterService: UserRegisterService
+    private adminService: AdminService
   ) { }
 
   ngOnInit() {
@@ -29,7 +29,7 @@ export class UserRegisterComponent implements OnInit {
   register() {
     if (this.registerForm.valid && !this.registerForm.pending) {
       const user = this.registerForm.getRawValue() as NewUser;
-      this.userRegisterService
+      this.adminService
         .registerUser(user)
         .subscribe(
           () => {

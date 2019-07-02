@@ -40,12 +40,12 @@ public class UserController {
 
 	@GetMapping(value = "/{page}/{size}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	public Page<User> listUsers(@PathVariable Integer page, @PathVariable Integer size) {
+	public Page<UserDto> listUsers(@PathVariable Integer page, @PathVariable Integer size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
-		Page<User> user = userService.findAll(pageable);
-		
-		return user;
+		Page<User> users = userService.findByProfilesName(pageable ,"ROLE_COSTUMER");		
+				
+		return UserDto.convert(users);
 	}
 	
 	@GetMapping(value = "/{id}")

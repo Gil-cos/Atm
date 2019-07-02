@@ -12,14 +12,14 @@ import com.arm.atm.repository.UserRepository;
 
 @Service
 public class UserService {
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	public User save(User user) {
 		return userRepository.save(user);
 	}
-	
+
 	public Optional<User> findById(Long userId) {
 		return userRepository.findById(userId);
 	}
@@ -28,8 +28,8 @@ public class UserService {
 		return userRepository.findByUserName(userName);
 	}
 
-	public Page<User> findAll(Pageable pageable) {
-		return userRepository.findAll(pageable);
+	public Page<User> findByProfilesName(Pageable pageable, String name) {
+		return userRepository.findByProfilesName(pageable, name);
 	}
 
 	public void deleteById(Long id) {

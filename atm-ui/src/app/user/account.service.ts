@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { DepositForm } from '../core/model/DepositForm';
-import { Account } from '../core/model/Account';
+import { AccountDto } from '../core/model/AccountDto';
 
 const API = environment.ApiUrl;
 
@@ -18,7 +18,7 @@ export class AccountService {
   ) { }
 
   getAccount(name: string) {
-    return this.http.get<Account>(`${API}/api/account/${name}`);
+    return this.http.get<AccountDto>(`${API}/api/account/${name}`);
   }
 
   registerDeposit(deposit: DepositForm) {

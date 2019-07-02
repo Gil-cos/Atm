@@ -5,7 +5,7 @@ import { AccountRegisterComponent } from './account-register/account-register.co
 import { UserListComponent } from './user-list/user-list.component';
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { UserRegisterService } from './user-register/user-register.service';
+import { AdminService } from './admin.service';
 import { AdminRoutingModule } from './admin-routing.module';
 
 @NgModule({
@@ -26,7 +26,7 @@ import { AdminRoutingModule } from './admin-routing.module';
     AdminRoutingModule
   ],
   providers: [
-    UserRegisterService
+    AdminService
   ]
 })
 export class AdminModule { }

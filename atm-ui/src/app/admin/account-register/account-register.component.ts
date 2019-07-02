@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountForm } from 'src/app/core/model/AccountForm';
-import { UserRegisterService } from '../user-register/user-register.service';
+import { AdminService } from '../admin.service';
 
 export interface Bank {
   value: string;
@@ -29,7 +29,7 @@ export class AccountRegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private userRegisterService: UserRegisterService,
+    private adminService: AdminService,
     private route: ActivatedRoute
   ) { }
 
@@ -48,7 +48,7 @@ export class AccountRegisterComponent implements OnInit {
       const account = this.registerForm.getRawValue() as AccountForm;
       account.accountNumber = 0;
       console.log(account)
-      this.userRegisterService
+      this.adminService
         .registerAccount(account, this.userId)
         .subscribe(
           () => {

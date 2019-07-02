@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,7 @@ public class TokenService {
 	
     static final String CLAIM_KEY_ID = "id";
     static final String CLAIM_KEY_USERNAME = "name";
+    static final String CLAIM_KEY_PROFILE = "profile";
 
 	@Value("${jwt.expiration}")
 	private String expiration;
@@ -47,6 +47,7 @@ public class TokenService {
 
         claims.put(CLAIM_KEY_USERNAME, user.getUsername());
         claims.put(CLAIM_KEY_ID, user.getId());
+        claims.put(CLAIM_KEY_PROFILE, user.getProfiles().get(0).getName());
 
         return claims;
     }

@@ -5,6 +5,7 @@ import { AuthService } from '../core/auth/auth.service';
 import { UserService } from '../core/user/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TokenDto } from '../core/model/TokenDto';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -44,16 +46,24 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (tokenDto: TokenDto) => {
           this.userService.setToken(tokenDto.token, tokenDto.type);
-
-          this.router.navigate(['user'])
-
+          if (this.userService.getProfile() == 'ROLE_COSTUMER') {
+            this.router.navigate(['user']);
+          } else {
+            this.router.navigate(['admin']);
+          }
         },
         err => {
           console.log(err);
           this.loginForm.reset();
-          alert('Invalid user name or password');
+          this.openSnackBar('Invalid user name or password', 'Ok');
         }
       );
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 
 }

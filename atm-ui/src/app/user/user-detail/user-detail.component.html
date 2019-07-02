@@ -2,7 +2,7 @@
   <div>
     <mat-card class="example-card mat-elevation-z8">
       <mat-card-header>
-        <mat-card-title>Owner: {{ account?.owner.userName }}</mat-card-title>
+        <mat-card-title>Owner: {{ account?.owner }}</mat-card-title>
         <mat-card-subtitle>Account Number: {{ account?.number }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
@@ -11,7 +11,7 @@
           Balance: {{ account?.balance }}
         </p>
         <p>
-          Bank: {{ account?.bank.name }}
+          Bank: {{ account?.bank }}
         </p>
       </mat-card-content>
       <mat-card-actions>
@@ -85,7 +85,7 @@
               </mat-error>
             </mat-form-field>
           </div>
-          <button mat-raised-button color="primary" [disabled]="withdrawForm.invalid" (click)="depositRegister()">Ok</button>
+          <button mat-raised-button color="primary" [disabled]="withdrawForm.invalid" (click)="withdrawRegister()">Ok</button>
         </form>
 
       </mat-card-content>
