@@ -17,9 +17,8 @@ export class UserListComponent implements OnInit {
   length = 0;
   pageIndex = 0;
   pageSize = 3;
-  previousPageIndex = 0;
 
-  @ViewChild(MatPaginator, {}) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     private adminService: AdminService
@@ -40,6 +39,8 @@ export class UserListComponent implements OnInit {
     this.adminService.getUsers(e.pageIndex, this.pageSize)
       .subscribe((users) => {
         this.dataSource.data = users['content'];
+        this.pageIndex = users['pageable']['pageNumber'];
+        console.log(this.pageIndex);
       });
   }
 
