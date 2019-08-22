@@ -9,6 +9,7 @@ import { HttpProgressEvent } from "@angular/common/http";
 import { HttpResponse } from "@angular/common/http";
 import { HttpUserEvent } from "@angular/common/http";
 import { TokenService } from "../token/token.service";
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class RequestInterceptor implements HttpInterceptor {
@@ -17,15 +18,33 @@ export class RequestInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpSentEvent
         | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
-
+        console.log('sqsqss')
         if (this.tokenService.hasToken()) {
-            const token = this.tokenService.getToken(); 
+            const token = this.tokenService.getToken();
             req = req.clone({
                 setHeaders: {
                     'Authorization': token
                 }
             });
         }
-        return next.handle(req);
+        return next.handle(req)
+            .pipe(
+                tap(event => {
+                    if (event instanceof HttpResponse) {
+
+                        console.log(" all looks good");
+                        // http response status code
+                        console.log(event.status);
+                    }
+                }, error => {
+                    // http response status code
+                    console.log("----response----");
+                    console.error("status code:");
+                    console.error(error.status);
+                    console.error(error.message);
+                    console.log("--- end of response---");
+
+                })
+            );
     }
 }

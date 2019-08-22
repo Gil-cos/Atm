@@ -1,6 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatTableDataSource, PageEvent } from '@angular/material';
 import { AdminService } from '../admin.service';
+import { CustomPaginationService } from 'src/app/pagination/services/custom-pagination.service';
+import { Page } from 'src/app/core/model/page';
+import { User } from 'src/app/core/model/User';
+import { UserDto } from 'src/app/core/model/UserDto';
 
 @Component({
   selector: 'app-user-list',
@@ -11,38 +15,44 @@ export class UserListComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'name', 'details'];
 
-  dataSource = new MatTableDataSource<Object>();
+  page: Page<UserDto> = new Page();
 
-  PageEvent: PageEvent;
-  length = 0;
-  pageIndex = 0;
-  pageSize = 3;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  dataSource = new MatTableDataSource<UserDto>();
 
   constructor(
-    private adminService: AdminService
+    private adminService: AdminService,
+    private paginationService: CustomPaginationService
   ) { }
 
   ngOnInit() {
 
-    this.adminService.getUsers(this.pageIndex, this.pageSize)
-      .subscribe((users) => {
-        this.dataSource.data = users['content'];
-        this.length = users['totalElements'];
-      });
-    this.dataSource.paginator = this.paginator;
+    this.getData();
   }
 
-  onPageChange(e: PageEvent) {
-    this.pageIndex = e.pageIndex;
-    this.adminService.getUsers(e.pageIndex, this.pageSize)
-      .subscribe((users) => {
-        this.dataSource.data = users['content'];
-        this.pageIndex = users['pageable']['pageNumber'];
-        console.log(this.pageIndex);
+  private getData(): void {
+    this.adminService.getUsers(this.page.pageable.pageNumber, this.page.pageable.pageSize)
+      .subscribe(page => {
+        this.page = page;
+        this.dataSource.data = this.page.content;
+        console.log(this.page.content);
       });
   }
+
+  public getNextPage(): void {
+    this.page.pageable = this.paginationService.getNextPage(this.page);
+    this.getData();
+  }
+
+  public getPreviousPage(): void {
+    this.page.pageable = this.paginationService.getPreviousPage(this.page);
+    this.getData();
+  }
+
+  public getPageInNewSize(pageSize: number): void {
+    this.page.pageable = this.paginationService.getPageInNewSize(this.page, pageSize);
+    this.getData();
+  }
+
 
 
 

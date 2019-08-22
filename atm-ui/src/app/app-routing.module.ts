@@ -12,18 +12,15 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent,
-    canActivate: [LoginGuard]
+    component: LoginComponent
   },
   {
     path: 'admin',
-    loadChildren: './admin/admin.module#AdminModule',
-    canActivate: [AuthGuard]
+    loadChildren: './admin/admin.module#AdminModule'
   },
   {
     path: 'user',
-    loadChildren: './user/user.module#UserModule',
-    canActivate: [AuthGuard]
+    loadChildren: './user/user.module#UserModule'
   }
 ];
 

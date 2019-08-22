@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { AccountForm } from 'src/app/core/model/AccountForm';
 import { NewUser } from 'src/app/core/model/NewUser';
 import { environment } from 'src/environments/environment';
+import { Page } from '../core/model/page';
+import { UserDto } from '../core/model/UserDto';
 
 const API = environment.ApiUrl;
 
@@ -18,17 +20,17 @@ export class AdminService {
   ) { }
 
   registerUser(user: NewUser) {
-    let body = JSON.stringify(user);
+    const body = JSON.stringify(user);
     return this.http.post(`${API}/api/user`, body, httpOptions);
   }
 
   registerAccount(account: AccountForm, userId: number) {
-    let body = JSON.stringify(account);
+    const body = JSON.stringify(account);
     return this.http.post(`${API}/api/account/${userId}`, body, httpOptions);
   }
 
   getUsers(page: number, size: number) {
-    return this.http.get(`${API}/api/user/${page}/${size}`);
+    return this.http.get<Page<UserDto>>(`${API}/api/user/${page}/${size}`);
   }
 
 

@@ -1,3 +1,5 @@
-export class UserDto {
- public data:any;
+export interface UserDto {
+    id: number;
+    userName: string;
+    profiles: string[];
 }

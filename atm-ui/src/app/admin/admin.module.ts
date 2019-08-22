@@ -7,6 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdminService } from './admin.service';
 import { AdminRoutingModule } from './admin-routing.module';
+import { PaginationModule } from '../pagination/pagination.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { AdminRoutingModule } from './admin-routing.module';
     CommonModule,
     SharedModule,
     ReactiveFormsModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    PaginationModule
   ],
   providers: [
     AdminService

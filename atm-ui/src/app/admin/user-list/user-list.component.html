@@ -25,11 +25,12 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <mat-paginator 
-      [length]="length"
-      [pageIndex]="pageIndex"
-      [pageSize]="pageSize"
-      (page)="onPageChange($event)">
-    </mat-paginator>
+    <hr class="my-no w-100">
+    <app-custom-pagination 
+      [page]="page" 
+      (nextPageEvent)="getNextPage()" 
+      (previousPageEvent)="getPreviousPage()"
+      (pageSizeEvent)="getPageInNewSize($event)">
+    </app-custom-pagination>
   </div>
 </div>
